@@ -7,11 +7,16 @@ edition = "2024"
 license-file.workspace = true
 repository.workspace = true
 
+[features]
+# The module's `fedimint-cli` commands, and clap for them. Off by default: a binary that offers
+# the commands, such as a fedimint-cli build, turns it on.
+cli = ["dep:clap"]
+
 [dependencies]
 anyhow = { workspace = true }
 async-stream = { workspace = true }
 async-trait = { workspace = true }
-clap = { workspace = true, features = ["derive"] }
+clap = { workspace = true, features = ["derive"], optional = true }
 erased-serde = { workspace = true }
 fedi-stability-pool-common = { workspace = true }
 fedimint-api-client = { workspace = true }

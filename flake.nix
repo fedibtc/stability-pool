@@ -111,12 +111,13 @@
 
             clippy = craneLib.cargoClippy {
               cargoArtifacts = workspaceDeps;
-              cargoClippyExtraArgs = "--all-targets -- --deny warnings";
+              cargoClippyExtraArgs = "--all-targets --all-features -- --deny warnings";
               doInstallCargoArtifacts = false;
             };
 
             tests = craneLib.cargoTest {
               cargoArtifacts = workspace;
+              cargoTestExtraArgs = "--all-features";
               doInstallCargoArtifacts = false;
             };
 
