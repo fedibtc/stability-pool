@@ -1,0 +1,54 @@
+[workspace]
+members = ["crates/client", "crates/common", "crates/server"]
+resolver = "2"
+
+[workspace.package]
+license-file = "LICENSE"
+repository = "https://github.com/fedibtc/stability-pool"
+
+[workspace.dependencies]
+anyhow = "1"
+async-stream = "0.3.5"
+async-trait = "0.1.85"
+bitcoin = { version = "0.32.4", features = ["rand", "serde"] }
+clap = "4"
+erased-serde = "0.4"
+fedi-stability-pool-common = { path = "crates/common", version = "0.1.0" }
+fedimint-api-client = "0.12"
+fedimint-client = "0.12"
+fedimint-connectors = "0.12"
+fedimint-core = "0.12"
+fedimint-derive-secret = "0.12"
+fedimint-server-core = "0.12"
+futures = "0.3"
+itertools = "0.14"
+rand = "0.8"
+reqwest = { version = "0.12", features = [
+  "json",
+  "rustls-tls",
+], default-features = false }
+secp256k1 = { version = "0.29.0", default-features = false }
+serde = { version = "1.0.215", features = ["derive"] }
+serde_json = "1.0.139"
+thiserror = "2.0.8"
+tokio = "1"
+tracing = "0.1.37"
+
+[profile.dev]
+debug = false
+
+[profile.dev.package."*"]
+# Keep dependencies without debug information if the workspace profile is
+# changed to "line-tables-only" for more useful workspace panic traces.
+debug = false
+
+[profile.ci]
+debug = false
+incremental = false
+inherits = "dev"
+lto = "off"
+
+[profile.ci.package."*"]
+# Keep dependencies without debug information if the workspace profile is
+# changed to "line-tables-only" for more useful workspace panic traces.
+debug = false

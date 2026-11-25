@@ -1,0 +1,7 @@
+[default]
+extend-ignore-re = [
+  # base64-like blobs, e.g. test key material embedded in source
+  "[A-Za-z0-9+/_=-]{64,}",
+  # git commit hashes in backticks, e.g. `b0ba42d1` in docs citing a change
+  "`[0-9a-f]{7,40}`",
+]

@@ -1,0 +1,22 @@
+[package]
+name = "fedi-stability-pool-server"
+version = "0.1.0"
+description = "stability pool module for fedimint"
+edition = "2024"
+license-file.workspace = true
+repository.workspace = true
+
+[dependencies]
+anyhow = { workspace = true }
+async-trait = { workspace = true }
+erased-serde = { workspace = true }
+fedi-stability-pool-common = { workspace = true }
+fedimint-api-client = { workspace = true }
+fedimint-core = { workspace = true }
+fedimint-server-core = { workspace = true }
+futures = { workspace = true }
+itertools = { workspace = true }
+reqwest = { workspace = true, features = ["rustls-tls-native-roots"] }
+serde_json = { workspace = true }
+tokio = { workspace = true }
+tracing = { workspace = true }

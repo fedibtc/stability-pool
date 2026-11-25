@@ -1,0 +1,31 @@
+[package]
+name = "fedi-stability-pool-client"
+version = "0.1.0"
+authors = ["The Stability Pool Developers"]
+description = "stability pool module for fedimint"
+edition = "2024"
+license-file.workspace = true
+repository.workspace = true
+
+[dependencies]
+anyhow = { workspace = true }
+async-stream = { workspace = true }
+async-trait = { workspace = true }
+clap = { workspace = true, features = ["derive"] }
+erased-serde = { workspace = true }
+fedi-stability-pool-common = { workspace = true }
+fedimint-api-client = { workspace = true }
+fedimint-client = { workspace = true }
+fedimint-core = { workspace = true }
+fedimint-derive-secret = { workspace = true }
+futures = { workspace = true }
+rand = { workspace = true }
+secp256k1 = { workspace = true }
+serde = { workspace = true, features = ["derive"] }
+serde_json = { workspace = true }
+tokio = { workspace = true }
+tokio-stream = { version = "0.1.17", features = ["sync"] }
+tracing = { workspace = true }
+
+[dev-dependencies]
+fedimint-connectors = { workspace = true }

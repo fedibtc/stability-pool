@@ -1,0 +1,8 @@
+/target
+/target-nix
+/result
+/result-*
+/.direnv
+.DS_Store
+/.nix-deps
+/.envrc.local

@@ -1,0 +1,34 @@
+deadlines:
+  run:
+    - after: 3m
+      action: warn
+      notice: >-
+        This run has passed 3m. A run with a warm Nix cache finishes in about
+        a minute. Check for Nix cache misses, host contention, or slow builds
+        and tests. This warning does not fail the run; the 15m limit still
+        applies. See .config/selfci/ci.sh.
+    - { after: 15m, action: fail }
+    - { after: "+25%", action: warn }
+  # Shared backstops also cover lint, the dispatcher, and implicit steps.
+  job:
+    - { after: 12m, action: fail }
+    - { after: "+25%", action: warn }
+  step:
+    - { after: 11m, action: fail }
+    - { after: "+25%", action: warn }
+  notice: >-
+    Check Nix cache misses, machine load, and build and test runtime.
+    Look for ways to make the checks faster before increasing a deadline.
+
+timings:
+  percentile: 90
+  window: 30d
+  min-samples: 10
+
+job:
+  clone-mode: shallow
+  command: ./.config/selfci/ci.sh
+
+mq:
+  base-branch: main
+  merge-style: rebase
