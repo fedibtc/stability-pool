@@ -7,11 +7,17 @@ edition = "2024"
 license-file.workspace = true
 repository.workspace = true
 
+[features]
+default = ["cli"]
+# The module's `fedimint-cli` commands. Clients that embed the module without the CLI, such as
+# SDKs, turn off default features to leave out clap.
+cli = ["dep:clap"]
+
 [dependencies]
 anyhow = { workspace = true }
 async-stream = { workspace = true }
 async-trait = { workspace = true }
-clap = { workspace = true, features = ["derive"] }
+clap = { workspace = true, features = ["derive"], optional = true }
 erased-serde = { workspace = true }
 fedi-stability-pool-common = { workspace = true }
 fedimint-api-client = { workspace = true }
