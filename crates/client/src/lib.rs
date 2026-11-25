@@ -19,6 +19,7 @@ use fedi_stability_pool_common::{
     UnlockForWithdrawalInput, UnlockRequestStatus, WithdrawalInput,
 };
 use fedimint_api_client::api::{DynModuleApi, FederationApiExt as _, FederationError};
+use fedimint_client::module::error::ClientModuleError;
 use fedimint_client::module::module::init::{ClientModuleInit, ClientModuleInitArgs};
 use fedimint_client::module::module::recovery::NoModuleBackup;
 use fedimint_client::module::module::{ClientContext, OutPointRange};
@@ -94,7 +95,10 @@ impl ModuleInit for StabilityPoolClientInit {
 impl ClientModuleInit for StabilityPoolClientInit {
     type Module = StabilityPoolClientModule;
 
-    async fn init(&self, args: &ClientModuleInitArgs<Self>) -> anyhow::Result<Self::Module> {
+    async fn init(
+        &self,
+        args: &ClientModuleInitArgs<Self>,
+    ) -> Result<Self::Module, ClientModuleError> {
         Ok(StabilityPoolClientModule {
             cfg: args.cfg().to_owned(),
             client_key_pair: args
@@ -198,8 +202,10 @@ impl ClientModule for StabilityPoolClientModule {
     async fn handle_cli_command(
         &self,
         args: &[std::ffi::OsString],
-    ) -> anyhow::Result<serde_json::Value> {
-        self.handle_cli_command_inner(args).await
+    ) -> Result<serde_json::Value, ClientModuleError> {
+        self.handle_cli_command_inner(args)
+            .await
+            .map_err(|e| ClientModuleError::Other(e.into()))
     }
 }
 
@@ -1168,6 +1174,7 @@ async fn submit_tx_with_output_dbtx(
             tx,
         )
         .await
+        .map_err(anyhow::Error::from)
 }
 
 /// Composes an atomic multi-output deposit into an existing caller-owned DB
@@ -1192,6 +1199,7 @@ async fn submit_tx_with_deposit_outputs_dbtx(
             tx,
         )
         .await
+        .map_err(anyhow::Error::from)
 }
 
 fn validate_btc_balance_deposit_batch(
@@ -1464,12 +1472,10 @@ mod tests {
             client_key_pair: module_root_secret.clone().to_secp_key(secp256k1::SECP256K1),
             btc_depositor_keypair_override,
             module_api: DynGlobalApi::new(
-                futures::executor::block_on(ConnectorRegistry::build_from_client_defaults().bind())
-                    .expect("valid connector registry"),
+                futures::executor::block_on(ConnectorRegistry::build_from_client_defaults().bind()),
                 Default::default(),
                 None,
             )
-            .expect("valid empty API")
             .with_module(module_instance_id),
             client_ctx: ClientContext::new(
                 client.clone(),

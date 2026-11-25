@@ -213,7 +213,8 @@ impl Decodable for Account {
         modules: &ModuleDecoderRegistry,
     ) -> Result<Self, DecodeError> {
         let raw = AccountUnchecked::consensus_decode_partial(r, modules)?;
-        Ok(raw.try_into()?)
+        raw.try_into()
+            .map_err(|e: anyhow::Error| DecodeError::custom(e.to_string()))
     }
 }
 
