@@ -3,7 +3,7 @@ name = "fedi-stability-pool-server"
 version = "0.1.0"
 description = "stability pool module for fedimint"
 edition = "2024"
-license-file.workspace = true
+license.workspace = true
 repository.workspace = true
 
 [dependencies]

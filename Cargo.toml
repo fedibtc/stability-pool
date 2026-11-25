@@ -3,7 +3,7 @@ members = ["crates/client", "crates/common", "crates/server"]
 resolver = "2"
 
 [workspace.package]
-license-file = "LICENSE"
+license = "MIT"
 repository = "https://github.com/fedibtc/stability-pool"
 
 [workspace.dependencies]
