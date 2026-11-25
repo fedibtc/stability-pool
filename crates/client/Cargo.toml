@@ -8,9 +8,8 @@ license-file.workspace = true
 repository.workspace = true
 
 [features]
-default = ["cli"]
-# The module's `fedimint-cli` commands. Clients that embed the module without the CLI, such as
-# SDKs, turn off default features to leave out clap.
+# The module's `fedimint-cli` commands, and clap for them. Off by default: a binary that offers
+# the commands, such as a fedimint-cli build, turns it on.
 cli = ["dep:clap"]
 
 [dependencies]
